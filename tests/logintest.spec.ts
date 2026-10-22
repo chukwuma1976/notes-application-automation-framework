@@ -1,4 +1,5 @@
 import test, { expect } from "@playwright/test";
+import { userCredentials } from "../data/user-credentials";
 
 test.describe("Login test", () => {
 
@@ -10,8 +11,8 @@ test.describe("Login test", () => {
         const passwordInputBox = page.getByLabel("password");
         const loginButton = page.getByRole("button", { name: "Login" });
 
-        await emailInputBox.fill("eyeofahero@tester.com");
-        await passwordInputBox.fill("eyeofaheropassword");
+        await emailInputBox.fill(userCredentials.email);
+        await passwordInputBox.fill(userCredentials.password);
         await loginButton.click();
 
         await expect(page.getByTestId("home")).toBeVisible();
