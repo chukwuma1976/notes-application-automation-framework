@@ -35,4 +35,12 @@ export class LoginPage {
         expect(this.page.url()).toBe("https://practice.expandtesting.com/notes/app");
     }
 
+    async confirmInvalidCredentialsAlertMessage() {
+        await expect(this.page.getByTestId("alert-message")).toBeVisible();
+    }
+
+    async confirmValidationMessage(message: string) {
+        await expect(this.page.getByText(message)).toBeVisible();
+    }
+
 }
