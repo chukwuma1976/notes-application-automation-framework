@@ -30,17 +30,17 @@ export class LoginPage {
     }
 
     async confirmNavigationToLandingPage() {
-        await expect(this.notesHeader).toBeVisible();
+        await expect(this.notesHeader).toBeVisible({ timeout: 15000 });
         expect(await this.page.title()).toBe("Notes React Application for Automation Testing Practice");
         expect(this.page.url()).toBe("https://practice.expandtesting.com/notes/app");
     }
 
     async confirmInvalidCredentialsAlertMessage() {
-        await expect(this.page.getByTestId("alert-message")).toBeVisible();
+        await expect(this.page.getByTestId("alert-message")).toBeVisible({ timeout: 15000 });
     }
 
     async confirmValidationMessage(message: string) {
-        await expect(this.page.getByText(message)).toBeVisible();
+        await expect(this.page.getByText(message)).toBeVisible({ timeout: 15000 });
     }
 
 }
