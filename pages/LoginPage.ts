@@ -26,13 +26,17 @@ export class LoginPage {
     }
 
     async login(email: string, password: string) {
+        await expect(this.emailInputBox).toBeVisible({ timeout: 15000 });
+        await expect(this.passwordInputBox).toBeVisible({ timeout: 15000 });
+        await expect(this.loginButton).toBeVisible({ timeout: 15000 });
+
         await this.emailInputBox.fill(email);
         await this.passwordInputBox.fill(password);
         await this.loginButton.click();
     }
 
     async confirmNavigationToLandingPage() {
-        await expect(this.notesHeader).toBeVisible();
+        await expect(this.notesHeader).toBeVisible({ timeout: 15000 });
         expect(await this.page.title()).toBe("Notes React Application for Automation Testing Practice");
         expect(this.page.url()).toBe("https://practice.expandtesting.com/notes/app");
     }
