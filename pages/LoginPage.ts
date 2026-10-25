@@ -12,8 +12,8 @@ export class LoginPage {
     constructor(private page: Page) {
         this.page = page;
 
-        this.emailInputBox = page.getByLabel("email");
-        this.passwordInputBox = page.getByLabel("password");
+        this.emailInputBox = page.getByTestId("login-email");
+        this.passwordInputBox = page.getByTestId("login-password");
         this.loginButton = page.getByRole("button", { name: "Login" });
 
         this.notesHeader = this.page.getByTestId("home");
