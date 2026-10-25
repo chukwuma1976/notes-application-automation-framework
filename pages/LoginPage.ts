@@ -7,6 +7,7 @@ export class LoginPage {
     private loginButton: Locator;
     private notesHeader: Locator;
 
+    private invalidCredentialsAlertMessage: Locator;
     private loginURL = "https://practice.expandtesting.com/notes/app/login"
 
     constructor(private page: Page) {
@@ -16,7 +17,8 @@ export class LoginPage {
         this.passwordInputBox = page.getByTestId("login-password");
         this.loginButton = page.getByRole("button", { name: "Login" });
 
-        this.notesHeader = this.page.getByTestId("home");
+        this.notesHeader = page.getByTestId("home").or(page.getByText("MyNotes"));
+        this.invalidCredentialsAlertMessage = page.getByTestId("alert-message").or(page.getByText("Incorrect email address or password"));
     }
 
     async navigateToLogin() {
@@ -30,17 +32,17 @@ export class LoginPage {
     }
 
     async confirmNavigationToLandingPage() {
-        await expect(this.notesHeader).toBeVisible({ timeout: 15000 });
+        await expect(this.notesHeader).toBeVisible();
         expect(await this.page.title()).toBe("Notes React Application for Automation Testing Practice");
         expect(this.page.url()).toBe("https://practice.expandtesting.com/notes/app");
     }
 
     async confirmInvalidCredentialsAlertMessage() {
-        await expect(this.page.getByTestId("alert-message")).toBeVisible({ timeout: 15000 });
+        await expect(this.invalidCredentialsAlertMessage).toBeVisible();
     }
 
     async confirmValidationMessage(message: string) {
-        await expect(this.page.getByText(message)).toBeVisible({ timeout: 15000 });
+        await expect(this.page.getByText(message)).toBeVisible();
     }
 
 }
