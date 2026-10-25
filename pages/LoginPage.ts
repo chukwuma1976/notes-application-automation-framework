@@ -17,8 +17,8 @@ export class LoginPage {
         this.passwordInputBox = page.getByTestId("login-password");
         this.loginButton = page.getByRole("button", { name: "Login" });
 
-        this.notesHeader = page.getByTestId("home").or(page.getByText("MyNotes"));
-        this.invalidCredentialsAlertMessage = page.getByTestId("alert-message").or(page.getByText("Incorrect email address or password"));
+        this.notesHeader = page.getByTestId("home");
+        this.invalidCredentialsAlertMessage = page.getByTestId("alert-message");
     }
 
     async navigateToLogin() {
@@ -27,12 +27,8 @@ export class LoginPage {
 
     async login(email: string, password: string) {
 
-        await this.emailInputBox.click();
         await this.emailInputBox.fill(email);
-
-        await this.passwordInputBox.click();
         await this.passwordInputBox.fill(password);
-
         await this.loginButton.click();
     }
 
