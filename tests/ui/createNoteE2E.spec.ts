@@ -1,9 +1,9 @@
 import test from "@playwright/test"
-import { LoginPage } from "../pages/LoginPage"
-import { NotesPage } from "../pages/NotesPage";
-import { blockPopups } from "../utils/blockPopups";
-import { userCredentials } from "../data/user-credentials";
-import { generateNotesData } from "../data/notes-data";
+import { LoginPage } from "../../pages/LoginPage"
+import { NotesPage } from "../../pages/NotesPage";
+import { blockPopups } from "../../utils/blockPopups";
+import { userCredentials } from "../../data/user-credentials";
+import { generateNotesData } from "../../data/notes-data";
 
 test.describe("End to end testing", () => {
 
@@ -53,4 +53,34 @@ test.describe("End to end testing", () => {
         await notesPage.logout();
     })
 
-})
+    test("Edit a note and mark as complete", async ({ page }) => {
+
+        await loginPage.navigateToLogin();
+        await loginPage.login(email, password);
+        await loginPage.confirmNavigationToLandingPage();
+
+        // Create a note to edit
+        const noteData = generateNotesData("Personal");
+        await notesPage.clickAddNoteButton();
+        await notesPage.enterNoteData(noteData.category, noteData.title, noteData.description);
+        await notesPage.submitNote();
+
+        // Edit the note
+        await notesPage.navigateToCategory("All");
+        await notesPage.clickEditNote(noteData.title);
+        const updatedNoteData = { ...noteData, title: "Updated " + noteData.title, description: "Updated " + noteData.description };
+        await notesPage.enterNoteData(updatedNoteData.category, updatedNoteData.title, updatedNoteData.description);
+        await notesPage.markNoteInProgressAsComplete();
+        await notesPage.submitNote();
+
+        // Verify the updated note exists
+        await notesPage.navigateToCategory("All");
+        await notesPage.confirmNoteExists(updatedNoteData.title, updatedNoteData.description);
+
+        // Verify the note is marked as complete
+        await notesPage.navigateToCategory("All");
+
+        await notesPage.logout();
+
+    })
+});

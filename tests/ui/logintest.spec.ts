@@ -1,7 +1,7 @@
 import test from "@playwright/test";
-import { userCredentials } from "../data/user-credentials";
-import { LoginPage } from "../pages/LoginPage";
-import { blockPopups } from "../utils/blockPopups";
+import { userCredentials } from "../../data/user-credentials";
+import { LoginPage } from "../../pages/LoginPage";
+import { blockPopups } from "../../utils/blockPopups";
 
 test.describe("Login test", () => {
 

@@ -1,7 +1,7 @@
 import test from "@playwright/test";
-import { improperFormatCredentials, invalidCredentialCombinations, missingCredentialCombinations, passwordLengthCombinations, userCredentials } from "../data/user-credentials";
-import { LoginPage } from "../pages/LoginPage";
-import { blockPopups } from "../utils/blockPopups";
+import { improperFormatCredentials, invalidCredentialCombinations, missingCredentialCombinations, passwordLengthCombinations, userCredentials } from "../../data/user-credentials";
+import { LoginPage } from "../../pages/LoginPage";
+import { blockPopups } from "../../utils/blockPopups";
 
 test.describe("Negative login test scenarios", () => {
 
