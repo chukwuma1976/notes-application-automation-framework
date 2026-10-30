@@ -7,6 +7,7 @@ export class LoginPage {
     private loginButton: Locator;
     private notesHeader: Locator;
 
+    private invalidCredentialsAlertMessage: Locator;
     private loginURL = "https://practice.expandtesting.com/notes/app/login"
 
     constructor(private page: Page) {
@@ -16,7 +17,8 @@ export class LoginPage {
         this.passwordInputBox = page.getByTestId("login-password");
         this.loginButton = page.getByRole("button", { name: "Login" });
 
-        this.notesHeader = this.page.getByTestId("home");
+        this.notesHeader = page.getByTestId("home");
+        this.invalidCredentialsAlertMessage = page.getByTestId("alert-message");
     }
 
     async navigateToLogin() {
@@ -24,6 +26,7 @@ export class LoginPage {
     }
 
     async login(email: string, password: string) {
+
         await this.emailInputBox.fill(email);
         await this.passwordInputBox.fill(password);
         await this.loginButton.click();
@@ -36,7 +39,7 @@ export class LoginPage {
     }
 
     async confirmInvalidCredentialsAlertMessage() {
-        await expect(this.page.getByTestId("alert-message")).toBeVisible();
+        await expect(this.invalidCredentialsAlertMessage).toBeVisible();
     }
 
     async confirmValidationMessage(message: string) {
