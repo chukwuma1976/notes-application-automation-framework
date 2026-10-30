@@ -18,13 +18,13 @@ test.describe("End to end testing", () => {
         loginPage = new LoginPage(page);
         notesPage = new NotesPage(page);
 
-    })
-
-    test("Create a new note", async ({ page }) => {
-
         await loginPage.navigateToLogin();
         await loginPage.login(email, password);
         await loginPage.confirmNavigationToLandingPage();
+
+    })
+
+    test("Create a new note", async ({ page }) => {
 
         // Create multiple notes for each category
         const notesDataArray = [];
@@ -55,10 +55,6 @@ test.describe("End to end testing", () => {
 
     test("Edit a note and mark as complete", async ({ page }) => {
 
-        await loginPage.navigateToLogin();
-        await loginPage.login(email, password);
-        await loginPage.confirmNavigationToLandingPage();
-
         // Create a note to edit
         const noteData = generateNotesData("Personal");
         await notesPage.clickAddNoteButton();
@@ -80,7 +76,9 @@ test.describe("End to end testing", () => {
         // Verify the note is marked as complete
         await notesPage.navigateToCategory("All");
 
-        await notesPage.logout();
+        // Delete the updated note
+        await notesPage.clickDeleteNote(updatedNoteData.title);
 
+        await notesPage.logout();
     })
 });

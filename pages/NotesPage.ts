@@ -12,6 +12,7 @@ export class NotesPage {
     private noteCard: Locator;
     private myNotesHeader: Locator;
     private logoutButton: Locator;
+    private buyUsACoffeeLink: Locator;
 
     constructor(private page: Page) {
         this.page = page;
@@ -27,6 +28,7 @@ export class NotesPage {
 
         this.myNotesHeader = page.getByTestId('home').or(page.getByText('MyNotes'));
         this.logoutButton = page.getByTestId('logout');
+        this.buyUsACoffeeLink = page.getByRole("link", { name: "Buy us a coffee" });
     }
 
     async clickAddNoteButton() {
@@ -86,6 +88,10 @@ export class NotesPage {
 
     async logout() {
         await this.logoutButton.click();
+    }
+
+    async clickBuyUsACoffeeLink() {
+        await this.buyUsACoffeeLink.click();
     }
 
     async confirmNoteExists(title: string, description: string) {
