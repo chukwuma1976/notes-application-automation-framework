@@ -81,3 +81,12 @@ export const passwordLengthCombinations = [
         expectedMessage: "Password should be between 6 and 30 characters",
     },
 ];
+
+export function generateUserRegistrationData() {
+    const timestamp = Date.now();
+    return {
+        name: `User ${timestamp}`,
+        email: `user${timestamp}@example.com`,
+        password: "ValidPassword${timestamp}",
+    }
+}
