@@ -2,6 +2,9 @@ import test, { expect } from "@playwright/test";
 import { API_BASE_URL } from "../../../config/configurations";
 import { generateUserRegistrationData } from "../../../data/user-credentials";
 import { createNote, deleteUser, loginAndRetrieveToken, registerUser, retrieveNotes } from "../../../utils/apiHelpers";
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
+import { userProfileSchema } from "../../../resources/schemas/usersSchemas";
 
 test.describe("User Profile API Tests", () => {
 
@@ -14,6 +17,9 @@ test.describe("User Profile API Tests", () => {
         "phone": "5551234567",
         "company": "Example Company"
     };
+
+    const ajv = new Ajv({ allErrors: true });
+    addFormats(ajv);
 
     test.beforeAll(async ({ request }) => {
         // Register user
@@ -34,6 +40,10 @@ test.describe("User Profile API Tests", () => {
         expect(userProfile.data.name).toBe(name);
         expect(userProfile.data.email).toBe(email);
 
+        //Add ajv validation for the response against the userProfileSchema
+        const validate = ajv.compile(userProfileSchema);
+        const isValid = validate(userProfile);
+        expect(isValid).toBe(true);
     });
 
     test("Test get user profile endpoint with missing token", async ({ request }) => {
@@ -65,6 +75,11 @@ test.describe("User Profile API Tests", () => {
         expect(userProfile.data.name).toBe(updatePayload.name);
         expect(userProfile.data.phone).toBe(updatePayload.phone);
         expect(userProfile.data.company).toBe(updatePayload.company);
+
+        //Add ajv validation for the response against the userProfileSchema
+        const validate = ajv.compile(userProfileSchema);
+        const isValid = validate(userProfile);
+        expect(isValid).toBe(true);
     });
 
     test("Test update user profile endpoint with missing token", async ({ request }) => {
@@ -217,12 +232,3 @@ test.describe("User Profile API Delete Tests", () => {
     });
 
 })
-
-/*
-Confirm whether account deletion also deletes associated notes.
-1) Create a user account and log in to obtain an authentication token.
-2) Create a note associated with the user account.
-3) Delete the user account using the authentication token.
-4) Attempt to retrieve the previously created note using the same authentication token.
-5) Assert that the response indicates that the note no longer exists or that access is denied due to account deletion.
-*/

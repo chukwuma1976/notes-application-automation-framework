@@ -1,14 +1,19 @@
 import test, { expect } from "@playwright/test"
 import { userCredentials } from "../../../data/user-credentials";
 import { createNote, deleteNote, loginAndRetrieveToken } from "../../../utils/apiHelpers";
-import { generateNotesData } from "../../../data/notes-data";
 import { API_BASE_URL } from "../../../config/configurations";
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
+import { getNoteByIdSchema, notesListSchema } from "../../../resources/schemas/notesSchemas";
 
 test.describe("Retrieve Notes API Tests", () => {
 
     let token: string;
     const { email, password } = userCredentials;
     let headers: Record<string, string>;
+
+    const ajv = new Ajv({ allErrors: true });
+    addFormats(ajv);
 
     test.beforeEach(async ({ request }) => {
         token = await loginAndRetrieveToken(request, email, password);
@@ -27,6 +32,10 @@ test.describe("Retrieve Notes API Tests", () => {
         const result = await response.json();
         expect(Array.isArray(result.data)).toBeTruthy();
 
+        // Add ajv validation for the response against the notesListSchema
+        const validate = ajv.compile(notesListSchema);
+        const isValid = validate(result);
+        expect(isValid).toBe(true);
     });
 
     test("Retrieving all notes without a token will fail", async ({ request }) => {
@@ -51,6 +60,11 @@ test.describe("Retrieve Notes API Tests", () => {
         expect(response.status()).toBe(200);
         const result = await response.json();
         expect(result.data.category).toBe(newNote.category);
+
+        //Add ajv validation for the response against the noteObjectSchema
+        const validate = ajv.compile(getNoteByIdSchema);
+        const isValid = validate(result);
+        expect(isValid).toBe(true);
 
         //Delete created note
         await deleteNote(request, token, id);

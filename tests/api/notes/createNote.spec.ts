@@ -4,11 +4,18 @@ import { loginAndRetrieveToken } from "../../../utils/apiHelpers";
 import { generateNotesData } from "../../../data/notes-data";
 import { API_BASE_URL } from "../../../config/configurations";
 
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
+import { createNoteSchema } from "../../../resources/schemas/notesSchemas";
+
 test.describe("Create Note", () => {
 
     let token: string;
     const { email, password } = userCredentials;
     let headers: Record<string, string>;
+
+    const ajv = new Ajv({ allErrors: true });
+    addFormats(ajv);
 
     test.beforeEach(async ({ request }) => {
         token = await loginAndRetrieveToken(request, email, password);
@@ -35,6 +42,11 @@ test.describe("Create Note", () => {
         expect(newNote.title).toBe(createNotePayload.title);
         expect(newNote.description).toBe(createNotePayload.description);
         expect(newNote.category).toBe(createNotePayload.category);
+
+        //Add ajv validation for the response against the noteObjectSchema
+        const validate = ajv.compile(createNoteSchema);
+        const isValid = validate(createdNote);
+        expect(isValid).toBe(true);
 
         const id = newNote.id;
 

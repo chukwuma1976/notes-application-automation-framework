@@ -38,10 +38,22 @@ data/
 pages/
   LoginPage.ts            # Page object: login page
   NotesPage.ts            # Page object: notes page
+  ProfilePage.ts          # Page object: profile page  
 resources/
   images/
     eyeofaherobanner.jpg  # Static resources used by tests
 tests/
+  api/
+    users/
+      logout.spec.ts          # User logout tests
+      profile.spec.ts         # User profile tests
+      register.spec.ts        # User registration tests
+    notes/
+      authorization.spec.ts   # User authorization tests (Role Based Access Control)
+      createNote.spec.ts      # Note creation tests
+      deleteNote.spec.ts      # Note deletion testss
+      retrieveNotes.spec.ts   # Note retrieval tests
+      updateNote.spec.ts      # Note update tests
   ui/
     createNoteE2E.spec.ts     # End-to-end: create a note
     logintest.spec.ts         # Login (positive) tests
