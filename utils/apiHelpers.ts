@@ -15,6 +15,7 @@ export async function loginAndRetrieveToken(
 
     expect(response.status()).toBe(200);
     const responseBody = await response.json();
+    expect(responseBody.data.token).toBeTruthy();
     return responseBody.data.token;
 }
 
@@ -36,6 +37,17 @@ export async function registerUser(
     expect(response.status()).toBe(201);
     expect(result.message, { message: `${name} could not be registered.` }).toBe("User account created successfully")
     console.log(`${name} has been registered.`)
+}
+
+export async function updateUserProfile(request: APIRequestContext, token: string, updatedData: Record<string, any>): Promise<Record<string, any>> {
+    const response = await request.put(`${baseUrl}/users/profile`, {
+        headers: { "x-auth-token": token },
+        data: updatedData
+    });
+    expect(response.status()).toBe(200);
+    const result = await response.json();
+    console.log(`User profile updated`);
+    return result.data;
 }
 
 export async function deleteUser(request: APIRequestContext, token: string): Promise<void> {

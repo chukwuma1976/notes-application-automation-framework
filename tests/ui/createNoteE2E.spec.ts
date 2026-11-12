@@ -2,21 +2,25 @@ import test from "@playwright/test"
 import { LoginPage } from "../../pages/LoginPage"
 import { NotesPage } from "../../pages/NotesPage";
 import { blockPopups } from "../../utils/blockPopups";
-import { userCredentials } from "../../data/user-credentials";
+import { generateUserRegistrationData, userCredentials } from "../../data/user-credentials";
 import { generateNotesData } from "../../data/notes-data";
+import { registerUser } from "../../utils/apiHelpers";
 
 test.describe("End to end testing", () => {
 
     let loginPage: LoginPage;
     let notesPage: NotesPage;
-    const { email, password } = userCredentials;
     const noteCategories = ["Personal", "Work", "Home"];
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ page, request }) => {
 
         await blockPopups(page);
         loginPage = new LoginPage(page);
         notesPage = new NotesPage(page);
+
+        // API generated user data
+        const { name, email, password } = generateUserRegistrationData();
+        await registerUser(request, name, email, password);
 
         await loginPage.navigateToLogin();
         await loginPage.login(email, password);

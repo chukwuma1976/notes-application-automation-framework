@@ -1,5 +1,5 @@
 // Requires ajv-formats for the "email" format:
-//   import addFormats from 'ajv-formats'; addFormats(ajv);
+// import addFormats from 'ajv-formats'; addFormats(ajv);
 
 const baseEnvelope = {
   success: { type: 'boolean' },

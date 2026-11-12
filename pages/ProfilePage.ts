@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { UI_BASE_URL } from "../config/configurations";
 
 export class ProfilePage {
 
@@ -18,6 +19,10 @@ export class ProfilePage {
         this.fullNameValue = this.page.getByTestId("user-name");
         this.phoneNumberValue = this.page.getByTestId("user-phone");
         this.companyNameValue = this.page.getByTestId("user-company");
+    }
+
+    async navigateToProfilePage() {
+        await this.page.goto(UI_BASE_URL + "/profile");
     }
 
     async confirmAccountDetailsTabVisible() {
