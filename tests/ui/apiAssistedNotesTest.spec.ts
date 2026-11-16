@@ -38,14 +38,12 @@ test.describe("Profile page tests", () => {
 
     })
 
-    test("Verify user profile details", async ({ page, request }) => {
+    test("Verify notes details", async ({ page, request }) => {
         //Navigate to All notes category and confirm that all created notes exist
         await notesPage.navigateToCategory("All");
         for (const note of newNotes) {
             await notesPage.confirmNoteExists(note.title, note.description);
         }
-
-        await page.waitForTimeout(5000); // Wait for 5 seconds to ensure the page is fully loaded for demo purposes
 
     })
 

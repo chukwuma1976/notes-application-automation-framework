@@ -39,8 +39,17 @@ export async function registerUser(
     console.log(`${name} has been registered.`)
 }
 
+export async function retrieveUserProfile(request: APIRequestContext, token: string): Promise<Record<string, any>> {
+    const response = await request.get(`${baseUrl}/users/profile`, {
+        headers: { "x-auth-token": token }
+    });
+    expect(response.status()).toBe(200);
+    const result = await response.json();
+    return result.data;
+}
+
 export async function updateUserProfile(request: APIRequestContext, token: string, updatedData: Record<string, any>): Promise<Record<string, any>> {
-    const response = await request.put(`${baseUrl}/users/profile`, {
+    const response = await request.patch(`${baseUrl}/users/profile`, {
         headers: { "x-auth-token": token },
         data: updatedData
     });

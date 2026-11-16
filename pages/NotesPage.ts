@@ -1,4 +1,5 @@
 import { expect, Page, Locator } from "@playwright/test";
+import { UI_BASE_URL } from "../config/configurations";
 
 export class NotesPage {
 
@@ -29,6 +30,10 @@ export class NotesPage {
         this.myNotesHeader = page.getByTestId('home').or(page.getByText('MyNotes'));
         this.logoutButton = page.getByTestId('logout');
         this.buyUsACoffeeLink = page.getByRole("link", { name: "Buy us a coffee" });
+    }
+
+    async navigateToNotesPage() {
+        await this.page.goto(UI_BASE_URL);
     }
 
     async clickAddNoteButton() {
