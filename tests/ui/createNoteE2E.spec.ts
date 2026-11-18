@@ -2,7 +2,7 @@ import test from "@playwright/test"
 import { LoginPage } from "../../pages/LoginPage"
 import { NotesPage } from "../../pages/NotesPage";
 import { blockPopups } from "../../utils/blockPopups";
-import { generateUserRegistrationData, userCredentials } from "../../data/user-credentials";
+import { generateUserRegistrationData } from "../../data/user-credentials";
 import { generateNotesData } from "../../data/notes-data";
 import { registerUser } from "../../utils/apiHelpers";
 
