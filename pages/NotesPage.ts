@@ -14,6 +14,7 @@ export class NotesPage {
     private myNotesHeader: Locator;
     private logoutButton: Locator;
     private buyUsACoffeeLink: Locator;
+    private noNotesMessage: Locator;
 
     constructor(private page: Page) {
         this.page = page;
@@ -30,6 +31,7 @@ export class NotesPage {
         this.myNotesHeader = page.getByTestId('home').or(page.getByText('MyNotes'));
         this.logoutButton = page.getByTestId('logout');
         this.buyUsACoffeeLink = page.getByRole("link", { name: "Buy us a coffee" });
+        this.noNotesMessage = page.getByTestId('no-notes-message');
     }
 
     async navigateToNotesPage() {
@@ -102,6 +104,10 @@ export class NotesPage {
     async confirmNoteExists(title: string, description: string) {
         const noteCard = this.noteCard.filter({ hasText: title }).filter({ hasText: description });
         await expect(noteCard).toBeVisible();
+    }
+
+    async confirmNoNotesMessage() {
+        await expect(this.noNotesMessage).toBeVisible();
     }
 
 }
