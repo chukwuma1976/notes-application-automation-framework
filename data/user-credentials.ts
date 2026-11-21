@@ -90,3 +90,5 @@ export function generateUserRegistrationData() {
         password: "ValidPassword${timestamp}",
     }
 }
+
+export const TESTEMAIL_API_KEY = process.env.TESTEMAIL_API_KEY;
